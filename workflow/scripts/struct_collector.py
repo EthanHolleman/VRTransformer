@@ -28,7 +28,7 @@ def make_energy_dicts(energy_files: list):
     def assign_energy_to_permutation(energy_file: Path):
         # parent directory of the energy file should always be the permutation number
         # based on snakemake rules
-        perm = energy_file.parent.parts[-1]
+        perm = Path(energy_file).parent.parts[-1]
 
         with open(str(energy_file)) as handle:
             energy = float(handle.readline().strip())
@@ -47,11 +47,11 @@ def make_energy_dicts(energy_files: list):
 def add_fasta_path_and_plasmid_name_to_energy_dicts(
     plasmid_name: str, energy_dicts: list, permutation_fa_list: list
 ):
-    fa_lookup = {p.stem: p for p in permutation_fa_list}
+    fa_lookup = {Path(p).stem: p for p in permutation_fa_list}
 
     def determine_perm_fasta(perm_dict: dict):
         fasta_path = fa_lookup[perm_dict["permutation"]]
-        perm_dict["fasta_path"] = fasta_path
+        perm_dict["fasta_path"] = str(fasta_path)
 
         return perm_dict
 
@@ -63,13 +63,12 @@ def add_fasta_path_and_plasmid_name_to_energy_dicts(
 
 
 def main():
-    energy_files = collect_structure_energies(Path(snakemake.input))
-    energy_dicts = make_energy_dicts(energy_files)
-    energy_dicts = add_fasta_path_to_energy_dicts(
-        energy_dicts, snakemake.input["perm_fa"]
+    energy_dicts = make_energy_dicts(snakemake.input['energy_files'])
+    energy_dicts = add_fasta_path_and_plasmid_name_to_energy_dicts(
+        snakemake.params['plasmid'], energy_dicts, snakemake.input["plasmids"]
     )
 
-    pd.DataFrame(energy_dicts).to_csv(snakemake.output, sep="\t", index=False)
+    pd.DataFrame(energy_dicts).to_csv(snakemake.output[0], sep="\t", index=False)
 
 
 if __name__ == "__main__":

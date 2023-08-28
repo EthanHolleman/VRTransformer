@@ -11,7 +11,13 @@ TRIGGER_LINE = '# Distribution of structures at the end:'
 
 def main():
 
-    with open('/home/ethollem/workflows/drTransformer/workflow/output/DrTransformer/VR-14/perm-679/VR-14-perm-679.log') as handle:
+    logfile = []
+    for each_file in Path(snakemake.input[0]).iterdir():
+        if each_file.suffix == '.log':
+            logfile = each_file
+            break
+
+    with open(str(logfile)) as handle:
         struct_stats = [[], []]  # energy and occupancy
         read_entries = False
         line = handle.readline()
@@ -37,7 +43,7 @@ def main():
     
     structre_energy = df_stats.iloc[-1].energy
 
-    with open('test.txt', 'w') as write_path:
+    with open(snakemake.output[0], 'w') as write_path:
         write_path.write(str(structre_energy))
 
 

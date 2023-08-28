@@ -1,0 +1,7 @@
+WildcardError in file /group/flchedingrp/eth/workflows/drTransformer/workflow/Snakefile, line 34:
+No values given for wildcard 'perm_num'.
+  File "/group/flchedingrp/eth/workflows/drTransformer/workflow/Snakefile", line 34, in <module>
+Using profile profile/ for setting default command line arguments.
+WildcardError in file /group/flchedingrp/eth/workflows/drTransformer/workflow/Snakefile, line 34:
+No values given for wildcard 'perm_num'.
+  File "/group/flchedingrp/eth/workflows/drTransformer/workflow/Snakefile", line 34, in <module>

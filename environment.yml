@@ -1,0 +1,8 @@
+name: drTransformer
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - drtransformer
+  - viennarna==2.5.1

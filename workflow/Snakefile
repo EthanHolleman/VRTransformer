@@ -1,6 +1,6 @@
 import pandas as pd
 
-TOTAL_PERMS = 100
+TOTAL_PERMS = 500
 RESOURCES = '../resources'
 
 def collect_sequences(base_dir):
@@ -26,11 +26,16 @@ seq_paths = {p.stem: p for p in sequences}
 
 
 include: 'rules/dr_t.smk'
+include: 'rules/process_drt.smk'
 
 
 rule all:
     input:
         expand(
             'output/DrTransformer/{plasmid}/perm-{perm_num}',
+            plasmid=sequence_names, perm_num=range(TOTAL_PERMS)
+        ),
+        expand(
+            'output/DrTransformerOGSeqs/{plasmid}/',
             plasmid=sequence_names, perm_num=range(TOTAL_PERMS)
         )
